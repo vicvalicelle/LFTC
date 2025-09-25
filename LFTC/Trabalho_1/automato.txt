@@ -1,0 +1,17 @@
+# 1. Conjunto de todos os estados (separados por espaço)
+q0 q1 q2 q3
+
+# 2. Alfabeto (use 'e' para representar a transição épsilon)
+a b e
+
+# 3. Estado inicial
+q0
+
+# 4. Conjunto de estados finais (separados por espaço)
+q3
+
+# 5. Lista de Transições
+# Formato: origem simbolo destino
+q0 e q1
+q1 a q2
+q2 e q3
