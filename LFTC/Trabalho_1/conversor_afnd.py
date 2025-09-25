@@ -17,7 +17,8 @@ class AFND:
         print("Transições:")
         for (origem, simbolo), destinos in sorted(self.transicoes.items()):
             if simbolo != 'e':
-                print(f"  δ({origem}, {simbolo}) -> {{{', '.join(sorted(list(destinos)))}}}")
+                if origem in self.estados:
+                    print(f"  δ({origem}, {simbolo}) -> {{{', '.join(sorted(list(destinos)))}}}")
 
 
 def converter(automato):
@@ -49,13 +50,40 @@ def converter(automato):
                 novos_finais.add(p1)
                 houve_mudanca = True
 
+    estados_alcancaveis = set()
+    fila_exploracao = [automato.estado_inicial]
+    
+    if automato.estado_inicial:
+        estados_alcancaveis.add(automato.estado_inicial)
+
+    while fila_exploracao:
+        estado_atual = fila_exploracao.pop(0)
+        
+        for (origem, _), destinos in novas_transicoes.items():
+            if origem == estado_atual:
+                for destino in destinos:
+                    if destino not in estados_alcancaveis:
+                        estados_alcancaveis.add(destino)
+                        fila_exploracao.append(destino)
+                        
+    transicoes_filtradas = {
+        chave: destinos for chave, destinos in novas_transicoes.items()
+        if chave[0] in estados_alcancaveis
+    }
+    
+    finais_filtrados = {
+        estado for estado in novos_finais
+        if estado in estados_alcancaveis
+    }
+
     novo_alfabeto = automato.alfabeto - {'e'}
+
     return AFND(
-        automato.estados,
+        estados_alcancaveis,
         novo_alfabeto,
-        novas_transicoes,
+        transicoes_filtradas,
         automato.estado_inicial,
-        novos_finais
+        finais_filtrados
     )
 
 
