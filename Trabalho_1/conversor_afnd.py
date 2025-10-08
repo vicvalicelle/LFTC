@@ -17,8 +17,7 @@ class AFND:
         print("Transições:")
         for (origem, simbolo), destinos in sorted(self.transicoes.items()):
             if simbolo != 'e':
-                if origem in self.estados:
-                    print(f"  δ({origem}, {simbolo}) -> {{{', '.join(sorted(list(destinos)))}}}")
+                print(f"  δ({origem}, {simbolo}) -> {{{', '.join(sorted(list(destinos)))}}}")
 
 
 def converter(automato):
@@ -50,44 +49,17 @@ def converter(automato):
                 novos_finais.add(p1)
                 houve_mudanca = True
 
-    estados_alcancaveis = set()
-    fila_exploracao = [automato.estado_inicial]
-    
-    if automato.estado_inicial:
-        estados_alcancaveis.add(automato.estado_inicial)
-
-    while fila_exploracao:
-        estado_atual = fila_exploracao.pop(0)
-        
-        for (origem, _), destinos in novas_transicoes.items():
-            if origem == estado_atual:
-                for destino in destinos:
-                    if destino not in estados_alcancaveis:
-                        estados_alcancaveis.add(destino)
-                        fila_exploracao.append(destino)
-                        
-    transicoes_filtradas = {
-        chave: destinos for chave, destinos in novas_transicoes.items()
-        if chave[0] in estados_alcancaveis
-    }
-    
-    finais_filtrados = {
-        estado for estado in novos_finais
-        if estado in estados_alcancaveis
-    }
-
     novo_alfabeto = automato.alfabeto - {'e'}
-
     return AFND(
-        estados_alcancaveis,
+        automato.estados,
         novo_alfabeto,
-        transicoes_filtradas,
+        novas_transicoes,
         automato.estado_inicial,
-        finais_filtrados
+        novos_finais
     )
 
 
-def ler_arquivo_automato(arquivo):
+def ler_automato(arquivo):
     try:
         with open(arquivo, 'r') as f:
             linhas = f.readlines()
@@ -123,7 +95,7 @@ def ler_arquivo_automato(arquivo):
         return None
 
 # Execução
-afnd_com_epsilon = ler_arquivo_automato("automato.txt")
+afnd_com_epsilon = ler_automato("automato.txt")
 
 if afnd_com_epsilon:
     print("\nAutômato lido do arquivo:\n")
