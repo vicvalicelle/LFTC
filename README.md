@@ -30,7 +30,6 @@ Este projeto consiste em um script Python que converte uma Gramática Livre de C
   - **Conversão de GLC para APND**: Implementa o algoritmo de conversão baseado em duas regras principais:
     1.  **Expansão de Não-Terminais**: Para cada regra de produção, gera uma transição épsilon (`ε`) que substitui um não-terminal no topo da pilha pelo corpo da sua regra.
     2.  **Casamento de Terminais**: Para cada símbolo terminal da gramática, gera uma transição que o consome da fita de entrada se ele corresponder ao topo da pilha.
-  - **Leitura de Arquivo**: A gramática é lida a partir de um arquivo de texto (`gramatica.txt`), que suporta comentários (linhas iniciadas com `#`) para facilitar a edição e a compreensão.
 
 ### Formato do Arquivo de Entrada (`gcl.txt`)
 
@@ -45,4 +44,3 @@ Para que o script funcione corretamente, o arquivo de entrada deve seguir as seg
 5.  **Convenção de Nomenclatura**:
       - **Não-Terminais**: Devem começar com uma letra maiúscula.
       - **Terminais**: Devem começar com uma letra minúscula.
-6.  **Comentários**: Linhas que começam com `#` são ignoradas, permitindo adicionar anotações ao arquivo.
